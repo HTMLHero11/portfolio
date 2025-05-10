@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Web Developera</title>
+    <style>
+        /* Zmienne CSS */
+        :root {
+            --primary: #4a6bff;
+            --primary-dark: #3952cc;
+            --secondary: #ff6b6b;
+            --dark: #252525;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+        }
+
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        /* Nawigacja */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.5rem 0;
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--dark);
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Sekcje */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50%;
+            height: 4px;
+            background-color: var(--primary);
+        }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%), url('/api/placeholder/1200/800') no-repeat center center/cover;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+
+        .hero-text {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-left: 1rem;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* O mnie */
+        #about {
+            background-color: white;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .skills {
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            transition: width 1s ease;
+        }
+
+        /* Projekty */
+        #projects {
+            background-color: #f8f9fa;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .project-tag {
+            background-color: rgba(74, 107, 255, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-links {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .project-links a {
+            margin-right: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .project-links a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Kontakt */
+        #contact {
+            background-color: white;
+        }
+
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(74, 107, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .contact-text h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-text p, .contact-text a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-text a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Stopka */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-text {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 0.5rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Media queries */
+        @media screen and (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                height: 0;
+                overflow: hidden;
+                transition: height 0.3s ease;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                height: 200px;
+            }
+
+            .nav-links li {
+                margin: 1rem 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.5rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+    </style>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+<!-- Nawigacja -->
+<header class="navbar">
+    <div class="navbar-container">
+        <a href="#home" class="logo">ArDev</a>
+        <div class="hamburger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Strona główna</a></li>
+            <li><a href="#about">O mnie</a></li>
+            <li><a href="#projects">Projekty</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+    </div>
+</header>
+
+<!-- Strona główna -->
+<section id="home">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Cześć, jestem <span style="color: var(--primary);">Arek</span></h1>
+            <p class="hero-subtitle">Frontend Developer & UI/UX Designer</p>
+            <p class="hero-text">
+                Tworzę nowoczesne, responsywne i wydajne aplikacje webowe.
+                Specjalizuję się w technologiach front-endowych z naciskiem na dostarczanie
+                najlepszych doświadczeń użytkownika.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn">Zobacz projekty</a>
+                <a href="#contact" class="btn btn-outline">Skontaktuj się</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- O mnie -->
+<section id="about">
+    <div class="container">
+        <h2 class="section-title">O mnie</h2>
+        <div class="about-content">
+            <div class="about-image">
+                <img src="Avatar.png" alt="Avatar">
+            </div>
+            <div class="about-text">
+                <p>
+                    Cześć! Nazywam się Arek uczę się tworzenia nowoczesnych, responsywnych stron internetowych.
+                    Jestem uczniem 2 klasy technikum na kierunku technik informatyk. Poza nauką szkolną rozwijam się również samodzielnie, ucząc się technologii takich jak <strong>HTML5, CSS3, JavaScript, React, Tailwind CSS, Bootstrap i SASS.</strong> Poznaję też podstawy back-endu z Node.js i Express.js.
+
+                    Tworzę <strong> interfejsy użytkownika, animacje, formularze z walidacją oraz responsywne układy z użyciem Flexboxa i CSS Grid. </strong> Interesują mnie też grafika (SVG, Canvas) i wizualizacja danych (Chart.js, Recharts).
+
+                    To portfolio dokumentuje moje postępy i zaangażowanie. Szukam prostych zleceń komercyjnych, które pozwolą mi zdobywać praktyczne doświadczenie i rozwijać się zawodowo — łącząc naukę z możliwością dodatkowego zarobku.
+                </p>
+                <div class="skills">
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>HTML5 & CSS3</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>JavaScript</span>
+                            <span>55%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 55%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>React.js</span>
+                            <span>40%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 40%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Node.js & Express.js</span>
+                            <span>30%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projekty -->
+<section id="projects">
+    <div class="container">
+        <h2 class="section-title">Projekty</h2>
+        <div class="projects-grid">
+            <!-- Projekt 1 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="strona_kawiarni.png" alt="Cafe Breeze - Strona kawiarni">
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">☕ Strona internetowa kawiarni</h3>
+                    <p>Zaprojektowałem i zakodowałem responsywną stronę internetową dla fikcyjnej kawiarni. Celem projektu było stworzenie estetycznego i przejrzystego interfejsu, który dobrze wygląda zarówno na komputerach, jak i urządzeniach mobilnych.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">HTML5</span>
+                        <span class="project-tag">CSS3</span>
+                        <span class="project-tag">JavaScript</span>
+                        <span class="project-tag">Bootstrap</span>
+                    </div>
+                    <p><strong>Funkcje:</strong> menu kawiarni w formie siatki, formularz kontaktowy z walidacją, mapka z lokalizacją, animowane przejścia między sekcjami.</p>
+                    <p><strong>Wnioski:</strong> Podczas pracy nad projektem nauczyłem się praktycznego wykorzystania responsywnego układu oraz integracji prostych elementów interaktywnych.</p>
+                    <p><strong>Zobacz sam:</strong> adres strony: <strong>caffearoma.netlify.app</strong></p>
+                    <div class="project-links">
+                        <a href="#" target="_blank">Demo</a>
+                        <a href="#" target="_blank">GitHub</a>
+                    </div>
+                </div>
+            </div>
+</section>
+
+<!-- Kontakt -->
+<section id="contact">
+    <div class="container">
+        <h2 class="section-title">Kontakt</h2>
+        <div class="contact-wrapper">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i>📧</i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Email</h3>
+                        <a href="maruszczakarek@gmail.com">maruszczakarek@gmail.com</a>
+                    </div>
+                </div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/" target="_blank" class="social-link">
+                        <i>GH</i>
+                    </a>
+                    <a href="https://linkedin.com/in/" target="_blank" class="social-link">
+                        <i>LI</i>
+                    </a>
+                    <a href="https://twitter.com/" target="_blank" class="social-link">
+                        <i>TW</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stopka -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-text">
+            <p>Chcesz współpracować? Skontaktuj się ze mną!</p>
+        </div>
+        <div class="footer-links">
+            <a href="#home">Strona główna</a>
+            <a href="#about">O mnie</a>
+            <a href="#projects">Projekty</a>
+            <a href="#contact">Kontakt</a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Arek | Portfolio Web Developera</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Menu mobilne
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const navLinksItems = document.querySelectorAll('.nav-links li');
+
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    // Zamknij menu po kliknięciu w link
+    navLinksItems.forEach(item => {
+        item.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+    });
+
+    // Animacje podczas przewijania
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+
+        if (window.scrollY > 100) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+
+        // Animacja paska umiejętności
+        const skillBars = document.querySelectorAll('.skill-progress');
+        if (isElementInViewport(document.querySelector('.skills'))) {
+            skillBars.forEach(bar => {
+                bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
+            });
+        }
+    });
+
+    // Sprawdza czy element jest widoczny w oknie przeglądarki
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.bottom >= 0
+        );
+    }
+
+    // Obsługa formularza kontaktowego
+    const contactForm = document.getElementById('contactForm');
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // W przyszłości tutaj będzie kod do wysyłania formularza
+        contactForm.reset();
+    });
+
+    // Płynne przewijanie do sekcji
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>
